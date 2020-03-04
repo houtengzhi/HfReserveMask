@@ -44,8 +44,8 @@ public class MainPresenter {
         pharmacies.add(new Pharmacy("国胜大药房文曲路店", 10147));
         pharmacies.add(new Pharmacy("邻加医康复海亮九玺店", 11124));
         List<User> userList = new ArrayList<>();
-        User user1 = new User("叶雨", "340721198801012138", "13805623343", pharmacies);
-        User user2 = new User("何琴", "342622198907180247", "13739287291", pharmacies);
+        User user1 = new User("徐文昌", "340721198901010238", "13805623343", pharmacies);
+        User user2 = new User("王子健", "342622199007020246", "13805623343", pharmacies);
         userList.add(user1);
         userList.add(user2);
         return userList;
