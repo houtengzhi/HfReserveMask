@@ -12,6 +12,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.yechy.hfreservemask.BuildConfig;
 import com.yechy.hfreservemask.HttpHelper;
 import com.yechy.hfreservemask.MainPresenter;
+import com.yechy.hfreservemask.OutputTextView;
 import com.yechy.hfreservemask.R;
 import com.yechy.hfreservemask.entry.MaskInfo;
 import com.yechy.hfreservemask.entry.Pharmacy;
@@ -23,6 +24,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.os.Handler;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
@@ -44,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.IVie
 
     private ImageView mCaptchaIv;
     private EditText mCaptchaEdit;
-    private TextView mMessageTv;
+    private OutputTextView mMessageTv;
     private Button mRefreshBtn, mReserveBtn;
 
     private List<User> userList;
@@ -62,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.IVie
         mCaptchaIv = findViewById(R.id.iv_captcha);
         mCaptchaEdit = findViewById(R.id.edit_captcha);
         mMessageTv = findViewById(R.id.tv_message);
+        mMessageTv.setMovementMethod(ScrollingMovementMethod.getInstance());
         mRefreshBtn = findViewById(R.id.btn_refresh_captcha);
         mReserveBtn = findViewById(R.id.btn_reserve);
 
@@ -175,9 +178,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.IVie
         handler.post(new Runnable() {
             @Override
             public void run() {
-                CharSequence oldMessage = mMessageTv.getText();
-                String newMessage = oldMessage + "\n" + message;
-                mMessageTv.setText(newMessage);
+                mMessageTv.outputMessage(message);
             }
         });
     }

@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.yechy.hfreservemask.entry.MaskInfo;
 import com.yechy.hfreservemask.entry.Pharmacy;
+import com.yechy.hfreservemask.entry.ReserveResult;
 import com.yechy.hfreservemask.entry.User;
 import com.yechy.hfreservemask.entry.UserSendData;
 import com.yechy.hfreservemask.util.Constants;
@@ -181,27 +182,13 @@ public class HttpHelper {
         return bitmap;
     }
 
-    public String sendReserveData(UserSendData sendData) {
+    public ReserveResult sendReserveData(UserSendData sendData) {
         String url = Constants.BASE_URL + "/mask/book";
-        long timestamp = System.currentTimeMillis() / 1000 - 1;
+        long timestamp = System.currentTimeMillis() - 20000;
         MediaType mediaType = MediaType.parse("application/json;charset=utf-8");
 
         sendData.setTimestamp(String.valueOf(timestamp));
         sendData.setHash(getHash(timestamp));
-
-//        FormBody formBody = new FormBody.Builder()
-//                .add("name", sendData.getName())
-//                .add("cardNo", sendData.getCardNum())
-//                .add("phone", sendData.getPhoneNum())
-//                .add("reservationNumber", String.valueOf(sendData.getReservationNum()))
-//                .add("pharmacyName", sendData.getPharmacyName())
-//                .add("pharmacyCode", sendData.getPharmacyCode())
-//                .add("pharmacyPhase", sendData.getPharmacyPhase())
-//                .add("pharmacyPhaseName", sendData.getPharmacyPhaseName())
-//                .add("captcha", sendData.getCaptcha())
-//                .add("hash", getHash(timestamp))
-//                .add("timestamp", String.valueOf(timestamp))
-//                .build();
 
         RequestBody requestBody = RequestBody.create(mediaType, sendData.toJson());
         Request request = new Request.Builder()
@@ -220,7 +207,7 @@ public class HttpHelper {
             e.printStackTrace();
         }
         Log.d(TAG, "sendReserveData(), result=" + result);
-        return result;
+        return ParseUtil.parseReserveResult(result);
     }
 
     private String getHash(long timestamp) {

@@ -13,6 +13,7 @@ import com.baidu.ocr.sdk.model.GeneralResult;
 import com.baidu.ocr.sdk.model.WordSimple;
 import com.yechy.hfreservemask.entry.MaskInfo;
 import com.yechy.hfreservemask.entry.Pharmacy;
+import com.yechy.hfreservemask.entry.ReserveResult;
 import com.yechy.hfreservemask.entry.User;
 import com.yechy.hfreservemask.entry.UserSendData;
 import com.yechy.hfreservemask.ui.MainContract;
@@ -39,13 +40,13 @@ public class MainPresenter {
 
     public List<User> queryUserList() {
         List<Pharmacy> pharmacies = new ArrayList<>();
-        pharmacies.add(new Pharmacy("合肥大药房高新区百草店", 10807));
         pharmacies.add(new Pharmacy("立方连锁高新安医店", 10519));
+        pharmacies.add(new Pharmacy("合肥大药房高新区百草店", 10807));
         pharmacies.add(new Pharmacy("国胜大药房文曲路店", 10147));
         pharmacies.add(new Pharmacy("邻加医康复海亮九玺店", 11124));
         List<User> userList = new ArrayList<>();
-        User user1 = new User("徐文昌", "340721198901010238", "13805623343", pharmacies);
-        User user2 = new User("王子健", "342622199007020246", "13805623343", pharmacies);
+        User user1 = new User("王子健1", "342622199007020247", "13805623344", pharmacies);
+        User user2 = new User("王子健2", "342622199007020246", "13805623343", pharmacies);
         userList.add(user1);
         userList.add(user2);
         return userList;
@@ -79,7 +80,7 @@ public class MainPresenter {
     }
 
     public void startReserve(final User user, final String captcha) {
-        mView.showLog("开始预约: " + user.toString() + ", capthca=" + captcha);
+        mView.showLog("开始预约");
             ThreadUtil.executeByCached(new ThreadUtil.Task<Object>() {
                 @Override
                 public Object doInBackground() throws Throwable {
@@ -203,8 +204,14 @@ public class MainPresenter {
             mView.showLog("参数有空值");
             return;
         }
-        mView.showLog("" + data.toString());
-        HttpHelper.getInstance().sendReserveData(data);
+        mView.showLog("请求数据:");
+        mView.showLog(data.toJson());
+        ReserveResult result = HttpHelper.getInstance().sendReserveData(data);
+        mView.showLog("获取数据:");
+        mView.showLog(result != null ? result.toString() : "null");
+        if (result != null && result.isSucceed()) {
+            mView.showLog("预约成功！");
+        }
     }
 
     private boolean checkSendData(UserSendData data) {

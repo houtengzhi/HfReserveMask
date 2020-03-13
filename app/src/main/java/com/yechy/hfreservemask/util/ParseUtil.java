@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.yechy.hfreservemask.entry.MaskInfo;
 import com.yechy.hfreservemask.entry.Pharmacy;
+import com.yechy.hfreservemask.entry.ReserveResult;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -66,5 +67,22 @@ public class ParseUtil {
             }
         }
         return pharmacyList;
+    }
+
+    public static ReserveResult parseReserveResult(String response) {
+        ReserveResult reserveResult = null;
+        if (!TextUtils.isEmpty(response)) {
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+                String msg = jsonObject.optString("msg");
+                boolean succeed = jsonObject.optBoolean("succeed");
+                int status = jsonObject.optInt("status");
+                reserveResult = new ReserveResult(msg, succeed, status);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return reserveResult;
     }
 }

@@ -8,7 +8,7 @@
     tools:context=".ui.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <TextView
+    <com.yechy.hfreservemask.OutputTextView
         android:id="@+id/tv_message"
         android:layout_width="match_parent"
         android:layout_height="350dp"
